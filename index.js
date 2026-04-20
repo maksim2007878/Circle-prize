@@ -106,3 +106,4 @@ input.addEventListener('input', drawRouletteWheel); // Добавляет уча
 
 
 drawRouletteWheel();
+1
