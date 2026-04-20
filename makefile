@@ -24,4 +24,4 @@ help:
 	@echo "Команды:"
 	@echo "  make start - запустить всё сразу (нужен Node.js)"
 	@echo "  make run   - только запустить сервер"
-1
+
