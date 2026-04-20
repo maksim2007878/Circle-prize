@@ -24,3 +24,7 @@ help:
 	@echo "Команды:"
 	@echo "  make start - запустить всё сразу (нужен Node.js)"
 	@echo "  make run   - только запустить сервер"
+git:
+	git add .
+	git commit -m '1'
+	git push
