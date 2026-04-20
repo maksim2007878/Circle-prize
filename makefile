@@ -1,27 +1,16 @@
-# Переменные
 PORT = 3000
 URL = http://localhost:$(PORT)
 
-# Запуск сервера через npx serve (не требует глобальной установки)
+# Запуск сервера (оставляем в текущем окне)
 run:
-	@echo "🚀 Запуск сервера serve на $(URL)"
-	@npx serve . -l $(PORT)
+	@echo "🚀 Запуск сервера..."
+	@node server.js
 
-# Открытие браузера по умолчанию (универсально для всех ОС)
+# Отдельная команда для открытия (используем xdg-open для Linux)
 open:
-	@echo "🌐 Открываю браузер..."
-	@if command -v cmd.exe > /dev/null; then cmd.exe /c start $(URL); \
-	elif [ "$$(uname)" = "Darwin" ]; then open $(URL); \
-	elif command -v xdg-open > /dev/null; then xdg-open $(URL); \
-	else echo "Не удалось найти команду для открытия браузера"; fi
+	@echo "🌐 Открываю $(URL)..."
+	@xdg-open $(URL) || firefox $(URL)
 
-# Запустить сервер и открыть браузер одновременно
+# Комбо-команда (запуск в фоне и открытие)
 start:
-	@make -j 2 run open
-
-# Справка
-help:
-	@echo "Команды:"
-	@echo "  make start - запустить всё сразу (нужен Node.js)"
-	@echo "  make run   - только запустить сервер"
-
+	@node server.js & sleep 2 && xdg-open $(URL)

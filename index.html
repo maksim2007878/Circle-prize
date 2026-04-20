@@ -8,33 +8,41 @@
 </head>
 <body>
 
-    <!-- Окно победителя-->
+    <!-- Окно победителя -->
     <div id="winnerOverlay" class="overlay">
         <div class="winner-card">
             <h2>🎉 Победитель! 🎉</h2>
             <div id="winnerNameDisplay"></div>
-            <button2 id="closeBtn">Поздравляю</button2>
+            <!-- Исправлено: используем стандартный button с классом для стилей -->
+            <button id="closeBtn" class="close-btn">Поздравляю</button>
         </div>
     </div>
 
-    <!-- Колесо -->
     <h1>🎡 Розыгрыш призов</h1>
 
     <div class="container">
+        <!-- Блок управления -->
         <div class="controls">
             <label>Список участников</label>
-            <textarea id="participantsInput" placeholder="...&#10;...">Участник 1&#10;Участник 2&#10;Участник 3&#10;Участник 4</textarea>
+            <textarea id="participantsInput" placeholder="Введите имена...">Участник 1
+Участник 2
+Участник 3
+Участник 4</textarea>
             <button id="spinBtn">КРУТИТЬ КОЛЕСО</button>
         </div>
 
+        <!-- Визуализация колеса -->
         <div class="wheel-wrapper">
             <div class="arrow"></div>
             <canvas id="canvas" width="400" height="400"></canvas>
         </div>
 
+        <!-- История -->
         <div class="history">
             <h3>Победители:</h3>
             <ul id="winnersList"></ul>
+          
+            <button id="clearHistoryBtn" style="margin-top: 10px; padding: 5px; font-size: 12px; background: #e74c3c;">Очистить файл истории</button>
         </div>
     </div>
 
