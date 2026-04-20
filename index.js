@@ -70,8 +70,7 @@ function stopRotateWheel() {    // Выборка победителя
     const degrees = startAngle * 180 / Math.PI + 90;
     const arcd = arc * 180 / Math.PI;
     const index = Math.floor((360 - degrees % 360) / arcd);
-    const winner = names[(index + names.length) % names.length];
-    
+    const winner = names[(index + names.length) % names.length];    
     // Показ окна
     display.textContent = winner;
     overlay.style.display = 'flex';
