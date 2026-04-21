@@ -15,12 +15,13 @@ const colors = ["#3498db", "#e67e22", "#9b59b6", "#f1c40f", "#1abc9c", "#e74c3c"
 // Загрузка истории при старте
 async function loadHistory() {
     try {
-        const res = await fetch('/history.json');
+        const res = await fetch('/get-history'); 
         const history = await res.json();
         winnersList.innerHTML = '';
         history.reverse().forEach(data => {
             const li = document.createElement('li');
-            li.textContent = `${data.name} (${data.time})`;
+            const dateInfo = data.date ? `${data.date} ` : '';
+            li.textContent = `${data.name} (${dateInfo}${data.time})`;
             winnersList.appendChild(li);
         });
     } catch (e) { console.log("История пуста"); }
@@ -58,16 +59,31 @@ function stopRotateWheel() {
     clearTimeout(spinTimeout);
     const index = Math.floor((360 - (startAngle * 180 / Math.PI + 90) % 360) / (arc * 180 / Math.PI));
     const winner = names[(index + names.length) % names.length];
-    const winnerData = { name: winner, time: new Date().toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) };
+    
+    // 1. Формируем данные
+    const now = new Date();
+    const winnerData = { 
+        name: winner, 
+        date: now.toLocaleDateString('ru-RU'),
+        time: now.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
+    };
 
+    // Сохранение на сервер
     fetch('http://localhost:5000/save-winner', {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(winnerData)
     });
 
+    // УДАЛЕНИЕ ПОБЕДИТЕЛЯ из списка участников (Новое!)
+    const updatedNames = names.filter(n => n !== winner);
+    input.value = updatedNames.join('\n');
+    drawRouletteWheel(); // Перерисовываем колесо без победителя
+
+    // Показывает результат
     display.textContent = winner;
     overlay.style.display = 'flex';
-    const li = document.createElement('li'); li.textContent = `${winner} (${winnerData.time})`;
+    const li = document.createElement('li'); 
+    li.textContent = `${winner} (${winnerData.date} ${winnerData.time})`;
     winnersList.prepend(li);
 }
 

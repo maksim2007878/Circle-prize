@@ -3,10 +3,9 @@ URL = http://localhost:$(PORT)
 
 run:
 	@echo "🚀 Запуск сервера..."
-	@node server.js
+	@node server/server.js
 
 open:
-	@echo "🌐 Открытие браузера..."
 	@sleep 1 && (xdg-open $(URL) || open $(URL) || cmd.exe /c start $(URL))
 
 start:
