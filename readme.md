@@ -38,11 +38,9 @@
 
 1. **Подготовка окружения** (необходим Node.js):
    ```bash
-   
-   npm install express
+   #npm install express
 2. **Запуск через Makefile:**
-    
-    make start
+    #make start
 3. **Ручной запуск:**
     node server.js
 После чего перейдите по адресу: http://localhost:5000
