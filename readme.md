@@ -40,9 +40,9 @@
    ```bash
    #npm install express
 2. **Запуск через Makefile:**
-  ## make start
+   #make start
 3. **Ручной запуск:**
-  ## node server.js
+   #node server.js
 После чего перейдите по адресу: http://localhost:5000
 
 ⌨️ Доступные команды
