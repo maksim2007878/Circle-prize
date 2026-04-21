@@ -38,8 +38,10 @@
 
 1. **Подготовка окружения** (необходим Node.js):
    ```bash
+   
    npm install express
 2. **Запуск через Makefile:**
+    
     make start
 3. **Ручной запуск:**
     node server.js
