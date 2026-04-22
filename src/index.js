@@ -8,16 +8,36 @@ const display = document.getElementById('winnerNameDisplay');
 const closeBtn = document.getElementById('closeBtn');
 const clearBtn = document.getElementById('clearHistoryBtn');
 
-// ПАРОЛЬ
-const AUTH_PASS = "1111"; 
+// Работа с паролем в памяти браузера
+const getSavedPass = () => sessionStorage.getItem('spin_pass');
+
+function askPassword() {
+    const pass = prompt("Введите пароль для доступа к розыгрышу:");
+    if (pass) {
+        sessionStorage.setItem('spin_pass', pass);
+        location.reload(); // перезагрузка для доступа только с паролем
+    }
+}
 
 let names = [], startAngle = 0, arc = 0, spinTimeout = null;
 let spinAngleStart = 0, spinTime = 0, spinTimeTotal = 0;
 const colors = ["#3498db", "#e67e22", "#9b59b6", "#f1c40f", "#1abc9c", "#e74c3c", "#2ecc71", "#34495e"];
 
+// Загрузка истории
 async function loadHistory() {
+    const currentPass = getSavedPass();
+    if (!currentPass) return;
+
     try {
-        const res = await fetch('/get-history'); 
+        const res = await fetch('/get-history', {
+            headers: { 'x-auth-password': currentPass }
+        }); 
+        
+        if (res.status === 401) {
+            sessionStorage.removeItem('spin_pass');
+            return askPassword();
+        }
+
         const history = await res.json();
         winnersList.innerHTML = '';
         history.reverse().forEach(data => {
@@ -26,7 +46,7 @@ async function loadHistory() {
             li.textContent = `${data.name} (${dateInfo}${data.time})`;
             winnersList.appendChild(li);
         });
-    } catch (e) { console.log("История пуста"); }
+    } catch (e) { console.log("Ошибка загрузки истории"); }
 }
 
 function drawRouletteWheel() {
@@ -74,11 +94,15 @@ function stopRotateWheel() {
         method: 'POST', 
         headers: { 
             'Content-Type': 'application/json',
-            'x-auth-password': AUTH_PASS 
+            'x-auth-password': getSavedPass() 
         },
         body: JSON.stringify(winnerData)
     }).then(res => {
-        if (res.status === 401) alert("Ошибка авторизации на сервере!");
+        if (res.status === 401) {
+            alert("Срок действия пароля истек или он неверный!");
+            sessionStorage.removeItem('spin_pass');
+            askPassword();
+        }
     });
 
     const updatedNames = names.filter(n => n != winner);
@@ -105,17 +129,20 @@ clearBtn.addEventListener('click', () => {
     if (confirm("Очистить историю?")) {
         fetch('/clear-history', { 
             method: 'POST',
-            headers: { 'x-auth-password': AUTH_PASS }
+            headers: { 'x-auth-password': getSavedPass() }
         }).then(res => {
-            if (res.ok) {
-                winnersList.innerHTML = '';
-            } else {
-                alert("Ошибка доступа!");
-            }
+            if (res.ok) winnersList.innerHTML = '';
+            else alert("Ошибка доступа!");
         });
     }
 });
 
 input.addEventListener('input', drawRouletteWheel);
-drawRouletteWheel();
-loadHistory();
+
+// Проверка пароля
+if (!getSavedPass()) {
+    askPassword();
+} else {
+    drawRouletteWheel();
+    loadHistory();
+}
