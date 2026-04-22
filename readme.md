@@ -1,9 +1,8 @@
 # 🎡 Fortune Wheel 
 
-<p align="center">
+<p align="between">
   <img src="https://shields.io" alt="Status">
   <img src="https://shields.io" alt="Version">
-  <img src="https://shields.io|%20Node.js-orange?style=for-the-badge" alt="Stack">
 </p>
 
 ---
