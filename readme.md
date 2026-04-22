@@ -44,7 +44,7 @@
    ```
 3. **Ручной запуск:**
    ```
-   node server.js
+   node server/server.js
    ```
 После чего перейдите по адресу: http://localhost:5000
 
