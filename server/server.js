@@ -5,7 +5,6 @@ const app = express();
 
 app.use(express.json());
 
-// Настройка статики: теперь корень проекта на уровень выше папки server
 app.use(express.static(path.join(__dirname, '..')));
 
 const filePath = path.join(__dirname, 'history.json');
@@ -25,7 +24,7 @@ app.post('/save-winner', (req, res) => {
     res.json({ status: 'ok' });
 });
 
-// Получение истории для фронтенда
+// Получение истории
 app.get('/get-history', (req, res) => {
     if (fs.existsSync(filePath)) {
         res.sendFile(filePath);

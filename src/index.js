@@ -60,7 +60,7 @@ function stopRotateWheel() {
     const index = Math.floor((360 - (startAngle * 180 / Math.PI + 90) % 360) / (arc * 180 / Math.PI));
     const winner = names[(index + names.length) % names.length];
     
-    // 1. Формируем данные
+    //Формирование данных
     const now = new Date();
     const winnerData = { 
         name: winner, 
@@ -74,10 +74,10 @@ function stopRotateWheel() {
         body: JSON.stringify(winnerData)
     });
 
-    // УДАЛЕНИЕ ПОБЕДИТЕЛЯ из списка участников (Новое!)
+    // Удаление победителя из списка участников 
     const updatedNames = names.filter(n => n !== winner);
     input.value = updatedNames.join('\n');
-    drawRouletteWheel(); // Перерисовываем колесо без победителя
+    drawRouletteWheel(); // Перерисовывает колесо без победителя
 
     // Показывает результат
     display.textContent = winner;
@@ -89,7 +89,7 @@ function stopRotateWheel() {
 
 spinBtn.addEventListener('click', () => {
     if (!names.length) return alert("Добавьте участников!");
-    spinBtn.disabled = true; spinAngleStart = Math.random() * 10 + 40;
+    spinBtn.disabled = true; spinAngleStart = Math.random() * 10 + 20;
     spinTime = 0; spinTimeTotal = Math.random() * 3000 + 4000;
     rotateWheel();
 });
