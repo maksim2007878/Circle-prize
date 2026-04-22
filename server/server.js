@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
 const filePath = path.join(__dirname, 'history.json');
-const ADMIN_PASSWORD = "1111"; 
+const ADMIN_PASSWORD = "1112"; 
 
 // Сохранение победителя
 app.post('/save-winner', (req, res) => {
