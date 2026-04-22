@@ -1,6 +1,6 @@
 # 🎡 Fortune Wheel 
 
-<p align="space-between">
+<p align="centre">
   <img src="https://shields.io" alt="Status">
   <img src="https://shields.io" alt="Version">
 </p>
