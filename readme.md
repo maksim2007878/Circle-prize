@@ -1,6 +1,6 @@
 # 🎡 Fortune Wheel 
 
-<p align="centre">
+<p align="center">
   <img src="https://shields.io" alt="Status">
   <img src="https://shields.io" alt="Version">
 </p>
@@ -43,7 +43,7 @@
    ```
 3. **Ручной запуск:**
    ```
-   node server/server.js
+   node server.js
    ```
 После чего перейдите по адресу: http://localhost:5000
 
