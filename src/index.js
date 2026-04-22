@@ -8,11 +8,13 @@ const display = document.getElementById('winnerNameDisplay');
 const closeBtn = document.getElementById('closeBtn');
 const clearBtn = document.getElementById('clearHistoryBtn');
 
+// ПАРОЛЬ
+const AUTH_PASS = "1111"; 
+
 let names = [], startAngle = 0, arc = 0, spinTimeout = null;
 let spinAngleStart = 0, spinTime = 0, spinTimeTotal = 0;
 const colors = ["#3498db", "#e67e22", "#9b59b6", "#f1c40f", "#1abc9c", "#e74c3c", "#2ecc71", "#34495e"];
 
-// Загрузка истории при старте
 async function loadHistory() {
     try {
         const res = await fetch('/get-history'); 
@@ -48,7 +50,7 @@ function drawRouletteWheel() {
 }
 
 function rotateWheel() {
-    spinTime += 20;
+    spinTime += 30;
     if (spinTime >= spinTimeTotal) { stopRotateWheel(); return; }
     startAngle += ((spinAngleStart - (spinTime / spinTimeTotal * spinAngleStart)) * Math.PI / 180);
     drawRouletteWheel();
@@ -60,7 +62,6 @@ function stopRotateWheel() {
     const index = Math.floor((360 - (startAngle * 180 / Math.PI + 90) % 360) / (arc * 180 / Math.PI));
     const winner = names[(index + names.length) % names.length];
     
-    //Формирование данных
     const now = new Date();
     const winnerData = { 
         name: winner, 
@@ -68,18 +69,22 @@ function stopRotateWheel() {
         time: now.toLocaleTimeString('ru-RU', {hour:'2-digit', minute:'2-digit'}) 
     };
 
-    // Сохранение на сервер
-    fetch('http://localhost:5000/save-winner', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
+    // отправка с паролем
+    fetch('/save-winner', {
+        method: 'POST', 
+        headers: { 
+            'Content-Type': 'application/json',
+            'x-auth-password': AUTH_PASS 
+        },
         body: JSON.stringify(winnerData)
+    }).then(res => {
+        if (res.status === 401) alert("Ошибка авторизации на сервере!");
     });
 
-    // Удаление победителя из списка участников 
-    const updatedNames = names.filter(n => n !== winner);
+    const updatedNames = names.filter(n => n != winner);
     input.value = updatedNames.join('\n');
-    drawRouletteWheel(); // Перерисовывает колесо без победителя
+    drawRouletteWheel();
 
-    // Показывает результат
     display.textContent = winner;
     overlay.style.display = 'flex';
     const li = document.createElement('li'); 
@@ -89,14 +94,26 @@ function stopRotateWheel() {
 
 spinBtn.addEventListener('click', () => {
     if (!names.length) return alert("Добавьте участников!");
-    spinBtn.disabled = true; spinAngleStart = Math.random() * 10 + 20;
+    spinBtn.disabled = true; spinAngleStart = Math.random() * 10 + 30;
     spinTime = 0; spinTimeTotal = Math.random() * 3000 + 4000;
     rotateWheel();
 });
 
 closeBtn.addEventListener('click', () => { overlay.style.display = 'none'; spinBtn.disabled = false; });
+
 clearBtn.addEventListener('click', () => {
-    if (confirm("Очистить историю?")) fetch('/clear-history', { method: 'POST' }).then(() => { winnersList.innerHTML = ''; });
+    if (confirm("Очистить историю?")) {
+        fetch('/clear-history', { 
+            method: 'POST',
+            headers: { 'x-auth-password': AUTH_PASS }
+        }).then(res => {
+            if (res.ok) {
+                winnersList.innerHTML = '';
+            } else {
+                alert("Ошибка доступа!");
+            }
+        });
+    }
 });
 
 input.addEventListener('input', drawRouletteWheel);

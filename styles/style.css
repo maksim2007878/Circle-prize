@@ -48,17 +48,16 @@ body {
 .controls { width: 300px; display: flex; flex-direction: column; gap: 10px; }
 textarea { height: 150px; padding: 12px; border-radius: 8px; border: 1px solid #ccc; resize: none; }
 button { 
-    padding: 15px;
-    /* Яркий градиент */
+    padding: 20px;
     background: linear-gradient(45deg, #27ae60, #2ecc71, #3498db, #27ae60);
-    background-size: 300% 300%; /* Увеличиваем размер для плавного перехода */
+    background-size: 300% 300%;
     color: white;
     border: none; 
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
     font-size: 16px;
-    transition: 0.5s; /* Плавный переход при активации */
+    transition: 0.5s;
     box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     outline: none;
 }
