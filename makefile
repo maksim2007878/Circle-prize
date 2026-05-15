@@ -2,7 +2,7 @@ PORT = 5000
 URL = http://localhost:$(PORT)
 
 run:
-	@echo "🚀 Запуск сервера..."
+	@echo "Запуск сервера..."
 	@node server/server.js
 
 open:

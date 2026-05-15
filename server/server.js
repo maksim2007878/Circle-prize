@@ -8,7 +8,7 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname, '..')));
 
 const filePath = path.join(__dirname, 'history.json');
-const ADMIN_PASSWORD = "1112"; 
+const ADMIN_PASSWORD = "7777"; 
 
 // Сохранение победителя
 app.post('/save-winner', (req, res) => {
@@ -48,12 +48,12 @@ app.post('/clear-history', (req, res) => {
         return res.status(401).json({ error: "Unauthorized" });
     }
     fs.writeFileSync(filePath, JSON.stringify([], null, 4));
-    console.log("🧹 История очищена");
+    console.log("История очищена");
     res.json({ status: 'cleared' });
 });
 
 const PORT = 5000;
 app.listen(PORT, '0.0.0.0', () => {
-    console.log(`🚀 Сервер запущен на порту ${PORT}`);
+    console.log(`Сервер запущен на порту ${PORT}`);
     console.log(`Доступ для друзей: http://ip:${PORT}`);
 });
